@@ -1,10 +1,12 @@
-use std::os::unix::thread;
 use names::Generator;
-use rand::{Rng, thread_rng, random};
+use rand::{Rng, thread_rng};
+use crate::planet::{Planet, Biome};
 
-use crate::coordinates::CardinalDirection;
-use crate::planet::{self, Planet, Biome};
 
+
+// STRUCTS AND HELPER FUNCTIONS FOR CITIZEN/COLONY SETUP. 
+// this is not intended for functionality besides initial state management/setup for a colony and its citizens, all command functionality are implemented via
+// the commands.rs file
 
 #[derive(Debug)]
 pub enum CitizenOccupation{
@@ -24,7 +26,6 @@ pub struct Citizen {
     x_location: i32,
     y_location: i32,
 }
-
 pub struct Colony {
     pub name: String,
     pub planet: Planet,
@@ -38,7 +39,6 @@ impl Colony {
         // generate a new planet
         let mut rand_planet_name = Generator::default().next().to_owned().unwrap().to_uppercase();
         let mut rand_planet_size = thread_rng().gen_range(500..=2000);
-        // TODO: Change it so it generates a random biome now instead of just a desert planet
         let _planet = Planet::new(rand_planet_name, Biome::Desert, rand_planet_size, rand_planet_size);
         return Colony{ 
             name: _name,
@@ -82,14 +82,5 @@ impl Colony {
         return citizen_vec;
     }
 
-    /// Used to move a citizen, requires a colony instance
-    pub fn move_citizen(&mut self, direction: CardinalDirection, step_amount: u32) {
-        match direction {
-            CardinalDirection::NORTH => {self.citizens[0].y_location = self.citizens[0].y_location + step_amount as i32}
-            CardinalDirection::SOUTH => {self.citizens[0].y_location = self.citizens[0].y_location - step_amount as i32}
-            CardinalDirection::EAST => {self.citizens[0].y_location = self.citizens[0].y_location + step_amount as i32}
-            CardinalDirection::WEST => {self.citizens[0].y_location = self.citizens[0].y_location - step_amount as i32}
-        }
-        println!("{:?}", self.citizens[0]);
-    }
+
 }
