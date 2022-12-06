@@ -48,6 +48,46 @@ impl Colony {
         };
     }
 
+/*
+/** 
+* Paste one or more documents here
+*/
+{
+  "_id": {
+    "$oid": "638e9ab93efafdbb3caead7d"
+  }
+  "colony_name": "Europa-Prime",
+  "colony_citizen_number": 30,
+  "citizens": [ 
+    { "name": "toothsome-geese"},
+  ]
+}
+*/
+
+    /*
+         { name: "toothsome-geese", age: 34, occupation: Engineer, hp: 85, hunger: 62, thirst: 1, x_location: 0, y_location: 0 }
+         { name: "halting-balls", age: 38, occupation: Soldier, hp: 63, hunger: 87, thirst: 3, x_location: 0, y_location: 0 }
+         { name: "tiresome-selection", age: 96, occupation: Engineer, hp: 97, hunger: 29, thirst: 98, x_location: 0, y_location: 0 }
+         { name: "foregoing-field", age: 27, occupation: Engineer, hp: 81, hunger: 35, thirst: 95, x_location: 0, y_location: 0 }
+         { name: "hospitable-route", age: 24, occupation: Engineer, hp: 72, hunger: 46, thirst: 50, x_location: 0, y_location: 0 }
+         { name: "lethal-giraffe", age: 22, occupation: Engineer, hp: 58, hunger: 88, thirst: 21, x_location: 0, y_location: 0 }
+         { name: "wakeful-monkey", age: 89, occupation: Soldier, hp: 93, hunger: 95, thirst: 19, x_location: 0, y_location: 0 }
+         { name: "four-watch", age: 73, occupation: Farmer, hp: 98, hunger: 100, thirst: 28, x_location: 0, y_location: 0 }
+         { name: "difficult-lawyer", age: 77, occupation: Farmer, hp: 53, hunger: 67, thirst: 0, x_location: 0, y_location: 0 }
+         { name: "disastrous-eggs", age: 90, occupation: Engineer, hp: 99, hunger: 51, thirst: 95, x_location: 0, y_location: 0 }
+         { name: "curvy-transport", age: 38, occupation: Farmer, hp: 72, hunger: 26, thirst: 17, x_location: 0, y_location: 0 }
+         { name: "violent-reason", age: 54, occupation: Farmer, hp: 51, hunger: 88, thirst: 6, x_location: 0, y_location: 0 }
+         { name: "misty-thread", age: 42, occupation: Soldier, hp: 73, hunger: 44, thirst: 52, x_location: 0, y_location: 0 }
+         { name: "nauseating-houses", age: 69, occupation: Engineer, hp: 62, hunger: 80, thirst: 31, x_location: 0, y_location: 0 }
+         { name: "shaggy-writing", age: 24, occupation: Farmer, hp: 83, hunger: 99, thirst: 63, x_location: 0, y_location: 0 }
+         { name: "scintillating-song", age: 36, occupation: Soldier, hp: 58, hunger: 85, thirst: 41, x_location: 0, y_location: 0 }
+         { name: "voracious-acoustics", age: 67, occupation: Engineer, hp: 86, hunger: 49, thirst: 91, x_location: 0, y_location: 0 }
+         { name: "shut-spring", age: 86, occupation: Engineer, hp: 64, hunger: 82, thirst: 87, x_location: 0, y_location: 0 }
+         { name: "easy-top", age: 8, occupation: Farmer, hp: 76, hunger: 26, thirst: 18, x_location: 0, y_location: 0 }
+         { name: "loutish-food", age: 55, occupation: Farmer, hp: 98, hunger: 100, thirst: 75, x_location: 0, y_location: 0 }
+         { name: "long-term-insect", age: 95, occupation: Soldier, hp: 86, hunger: 73, thirst: 19, x_location: 0, y_location: 0 }
+    */
+
     /// Private function to generate citizens, to be used only as 
     /// a helper to Colony::new()
     fn generate_citizens(_citizen_number: u32) -> Vec<Citizen>{

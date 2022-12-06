@@ -1,3 +1,5 @@
+use std::time::{Duration, Instant};
+use std::thread::{sleep, self};
 use commands::Command;
 // use mongodb::{bson::doc, options::ClientOptions, Client};
 // This trait is required to use `try_next()` on the cursor
@@ -5,6 +7,7 @@ use commands::Command;
 use std::collections::HashMap;
 use std::io::{Write};
 use rand::{Rng, thread_rng};
+use crate::db::db_helper;
 
 
 mod db;
@@ -20,6 +23,7 @@ async fn get_user_input(commands: &HashMap<String, Command>) {
     println!("Welcome to Rusty Colonies The Following Commands are Below");
     // start program and get user input 
     let mut choice = String::new();
+
     while choice.trim() != "quit" {
         choice.clear();
         print!(":> ");
@@ -30,24 +34,32 @@ async fn get_user_input(commands: &HashMap<String, Command>) {
         // example of splitting on commands
 
 
-        //TODO: ADD REST OF COMMANDS TO MATCH ON. First do terminal commands, then do non terminal commands/action commands. action commands will require code refactor/rework.
         let mut choice_split = choice.split(" ");
+        // connect to colony or create a new one.
+
+
         // match on the first name of the command
         match choice_split.next().unwrap().trim() {
             "help" => {commands::iterate_over_commands(commands)},
-            "connect_db" => {    // connect to database
-                let val = db::db_helper::connect().await.unwrap();
+            "create_colony" => {println!("TODO-Implement")}, // TODO: mongo function
+            "test_db" => {    // tests connection to the database
+                let val = db::db_helper::test_connect().await.unwrap();
                 println!("{:?}", val);
             },
-            "citizens_info" => {println!("TODO-Implement")},
+            "citizens_info" => {
+                let val = commands::citizen_info(choice_split).await;
+            }, // TODO 1: mongo function
             "citizen_action" => {println!("TODO-Implement")},
-            "buildings_info" => {println!("TODO-Implement")},
-            "colony_info" => {println!("TODO-Implement")},
-            "citizen_info" => {println!("TODO-Implement")},
-            "market_sell" => {println!("TODO-Implement")},
-            "market_buy" => {println!("TODO-Implement")},
-            "market_list_orders" => {println!("TODO-Implement")},
-            "market_log" => {println!("TODO-Implement")},
+            "buildings_info" => {println!("TODO-Implement")}, // TODO 1: mongo function
+            "colony_info" => {
+                // don't really need to do anything with this right now
+                commands::colony_info(choice_split).await;
+            },
+            "citizen_info" => {println!("TODO-Implement")}, // TODO 1: mongo function
+            "market_sell" => {println!("TODO-Implement")}, // TODO 2
+            "market_buy" => {println!("TODO-Implement")}, // TODO 2
+            "market_list_orders" => {println!("TODO-Implement")}, // TODO 2
+            "market_log" => {println!("TODO-Implement")}, // TODO 2
             "quit" => {break},
             "q" => {break},
             _ => { println!("nothing matched, please enter new command")}
@@ -55,8 +67,25 @@ async fn get_user_input(commands: &HashMap<String, Command>) {
     }
 }
 
+
+
 #[tokio::main]
 async fn main(){
+    // // test tick system/thread sleep system. First to organize my information into a db.
+    // let instant_now = Instant::now();
+    // let seconds_to_elapse: f64 = 10.0;
+    // // we sleep for 2 seconds
+    // thread::spawn(move || {
+    //     sleep(Duration::new(1, 0));
+    //     println!("{}", instant_now.elapsed().as_secs());  
+    //     while instant_now.elapsed().as_secs_f64() < seconds_to_elapse{
+    //         sleep(Duration::new(1, 0));
+    //         println!("{}", instant_now.elapsed().as_secs());  
+    //     }
+    // });
+    // // it prints '2'
+    // println!("{:?} asdf asdf ", instant_now);
+
     // test, rework this for commands, as needed
     let commands = commands::generate_command_hashmap();
     get_user_input(&commands).await;
@@ -80,6 +109,10 @@ async fn main(){
     // new_colony.move_citizen(CardinalDirection::WEST, 20);
     // new_colony.move_citizen(CardinalDirection::EAST, 5);
     // Ok(())
+    
+    // println!("{:?}",now.duration_since(Instant::now()));
+    //405811316378249
+    //405811316378249
 
 
     
