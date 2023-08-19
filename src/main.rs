@@ -1,4 +1,4 @@
-use crate::commands::plant;
+use crate::commands::{harvest, plant};
 use commands::Command;
 use std::thread::{self, sleep};
 use std::time::{Duration, Instant};
@@ -28,17 +28,22 @@ Sequence/User Story 1:
     [X]- research actual timestamps and include in txt files
     [X]- calculate the difference between timestamps
 [X]- file with timestamp, plant name, plant id, growth time, harvest timestamp (i.e. the time the plant will be ready to be harvested )
-[] write harvest method/command. command will attempt to harvest the plant, remove from farm.txt and store that in inventory.txt with the same information as was in farm.txt
-    []- create new `harvest <plantid>` called harvest().
-    [] - read farm.txt (read_from_farmtxt())
-    []- if the timestamp has not passed yet, `Growing...` will be displayed the the screen
-    []- if the timestamp has passed, `Harvestable!` will be displayed
-        []- remove the plant from farm.txt
+[X]-  write harvest method/command. command will attempt to harvest the plant, remove from farm.txt and store that in inventory.txt with the same information as was in farm.txt
+    [X]- create new `harvest <plantid>` called harvest().
+    [X] - read farm.txt (read_from_farmtxt())
+    [X]- if the timestamp has not passed yet, `Growing...` will be displayed the the screen
+    [X]- if the timestamp has passed, `Harvestable!` will be displayed
+        [X]- remove the plant from farm.txt
+[]- clean up harvest method, remove docs and unneaded code.
 
 TODO:
-[]- generate list of plantable plants
+[]- Generate list of plantable plants
+[]- Experiment with RASCII art implementation (https://github.com/UTFeight/RASCII)
+[]- Experiment with RASCII Charism crate implememntation (https://github.com/UTFeight/Charisma)
+
 
 Backlog:
+[]- harvestall() command. Harvests all plants on the farm. Example command is: `harvestall 1`. This would harvest all plants that have an id of 1 (i.e zuccinis)
 []- add localized, compact sqlite/sqlx db. Otherwise txt files gonna be huge eventually.
 Player-driven-market
 Remote saves (sqlite/sqlx)
@@ -77,6 +82,14 @@ async fn get_user_input(commands: &HashMap<String, Command>) {
                     Some(plantid) => plant(plantid),
                     None => println!(
                         "No plantID was given, please give in the format of `plant <plantid>` ex: plant 1"
+                    ),
+                };
+            }
+            "harvest" => {
+                match choice_split.next() {
+                    Some(plantid) => harvest(plantid),
+                    None => println!(
+                        "No plantID was given, please give in the format of `harvest <plantid>` ex: plant 1"
                     ),
                 };
             }

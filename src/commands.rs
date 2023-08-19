@@ -1,11 +1,15 @@
 use chrono::Utc;
+use mongodb::bson::de;
 use serde::{Deserialize, Serialize};
 use serde_json;
+use serde_json::{from_value, Deserializer, Value};
 use std::collections::HashMap;
+use std::fs;
 use std::fs::File;
 use std::fs::OpenOptions;
 use std::io::prelude::*;
 use std::io::Write;
+use std::io::{BufRead, BufReader};
 use std::path::Path;
 use std::str::Split;
 
@@ -229,16 +233,115 @@ pub fn plant(plantid: &str) {
 
     // serialize data
     let mut serialized_plant_data = serde_json::to_string(&plant).unwrap();
-    serialized_plant_data.push(','); // add comma at end of data, not included otherwise
+    //serialized_plant_data.push(','); // add comma at end of data, not included otherwise. can cause an error when reading data though
 
     let dt = Utc::now();
     let timestamp: i64 = dt.timestamp();
     println!("Current timestamp is {}", timestamp);
     // write to farm.txt
-    write_to_farmtxt(serialized_plant_data, "farm.txt");
+    write_to_farmtxt(serialized_plant_data, "farm.txt", false);
 }
 
-fn write_to_farmtxt(data: String, filename: &str) {
+/// Attempts to harvest all plant in the format of `harvest <plantid>`
+/// Ex:) `harvest 1`
+pub fn harvest(plantid: &str) {
+    let filename = "inventory.txt";
+    // read from farm.txt
+    let mut plant_data = read_from_farmtxt("farm.txt");
+    let mut plant_data = match plant_data {
+        Ok(plant_data) => {
+            println!("Plant data: {:?}", plant_data);
+            plant_data
+        }
+        Err(e) => {
+            println!("Error: {:?}", e);
+            vec![]
+        }
+    };
+    // check if vector is empty
+    if plant_data.is_empty() {
+        println!("Error, empty plant data vec");
+        return;
+    }
+    // determine first possible, available plant if plant is harvestable
+    let mut harvestable = false;
+    for plant in &plant_data {
+        //println!("Plant: {:?}", plant);
+        // get first available plant that matches plantid
+        if (plant.id == plantid.trim().parse::<i32>().unwrap()) {
+            // check if harvestable
+            if (Utc::now().timestamp() >= plant.harvested_timestamp) {
+                println!("Plant is harvestable!, Harvesting...");
+                harvestable = true;
+                // add to inventory.txt
+                write_to_inventorytxt(serde_json::to_string(&plant).unwrap(), filename);
+                break; // break the loop so only writing one plant
+            } else {
+                println!(
+                    "Not harvestable yet! Reading in: {:?} seconds",
+                    plant.harvested_timestamp - Utc::now().timestamp()
+                );
+            }
+        }
+    }
+    // remove plant from farm.txt
+    if harvestable {
+        // remove first instance in vec
+        //let index: usize = plant_data.iter().position(|x| *x == some_x).unwrap();
+        //let new_data = plant_data.remove(0);
+        // if let Some(index) = plant_data.iter().position(|&x| x.id == 1) {
+        //     plant_data.remove(index);
+        // };
+        plant_data.remove(0);
+
+        let mut string_buf = String::new();
+        for plant in plant_data {
+            println!("{:?}", plant);
+            string_buf = string_buf + &serde_json::to_string(&plant).unwrap();
+        }
+        write_to_farmtxt(string_buf, "farm.txt", true);
+    }
+}
+
+fn write_to_farmtxt(data: String, filename: &str, overwrite: bool) {
+    // if file does not exist, create it
+    if !Path::new(filename).exists() {
+        let mut file = File::create(filename).expect("Failed to create file");
+        // write data
+        // file.writeall(b"Hello, World!")
+        //     .expect("Failed to write to file");
+    }
+    // write data to file
+    // overwrite file is override flag exist
+    if overwrite {
+        fs::write(filename, data.as_bytes());
+    } else {
+        let mut file = OpenOptions::new()
+            .write(true)
+            .append(true)
+            .open(filename)
+            .unwrap();
+        file.write_all(data.as_bytes())
+            .expect("Failed to write to file");
+    }
+}
+
+fn read_from_farmtxt(filename: &str) -> Result<Vec<Plant>, std::io::Error> {
+    let mut deserialized_plants: Vec<Plant> = vec![]; // new empty vector
+    let file = File::open(filename)?;
+    let reader = BufReader::new(file);
+    let deserializer = Deserializer::from_reader(reader).into_iter::<Value>(); // create a deserializer to iterate over deserialized values
+
+    for value in deserializer {
+        let value = value?;
+        // Process each JSON object
+        let mut json_struct: Plant = serde_json::from_value(value)?; // convert Value to Plant
+        deserialized_plants.push(json_struct);
+    }
+    Ok(deserialized_plants)
+}
+
+fn write_to_inventorytxt(data: String, filename: &str) {
     // if file does not exist, create it
     if !Path::new(filename).exists() {
         let mut file = File::create(filename).expect("Failed to create file");
@@ -256,9 +359,5 @@ fn write_to_farmtxt(data: String, filename: &str) {
     file.write_all(data.as_bytes())
         .expect("Failed to write to file");
 }
-
-fn read_from_farmtxt() {}
-
-fn write_to_inventorytxt() {}
 
 fn read_from_inventorytxt() {}
