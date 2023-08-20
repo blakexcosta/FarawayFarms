@@ -245,7 +245,8 @@ pub fn plant(plantid: &str) {
 /// Attempts to harvest all plant in the format of `harvest <plantid>`
 /// Ex:) `harvest 1`
 pub fn harvest(plantid: &str) {
-    let filename = "inventory.txt";
+    // inventory filename
+    let inventory_filename = "inventory.txt";
     // read from farm.txt
     let mut plant_data = read_from_farmtxt("farm.txt");
     let mut plant_data = match plant_data {
@@ -260,13 +261,12 @@ pub fn harvest(plantid: &str) {
     };
     // check if vector is empty
     if plant_data.is_empty() {
-        println!("Error, empty plant data vec");
+        println!("Error when Reading! Empty plant data vec as a result.");
         return;
     }
     // determine first possible, available plant if plant is harvestable
     let mut harvestable = false;
     for plant in &plant_data {
-        //println!("Plant: {:?}", plant);
         // get first available plant that matches plantid
         if (plant.id == plantid.trim().parse::<i32>().unwrap()) {
             // check if harvestable
@@ -274,7 +274,7 @@ pub fn harvest(plantid: &str) {
                 println!("Plant is harvestable!, Harvesting...");
                 harvestable = true;
                 // add to inventory.txt
-                write_to_inventorytxt(serde_json::to_string(&plant).unwrap(), filename);
+                write_to_inventorytxt(serde_json::to_string(&plant).unwrap(), inventory_filename);
                 break; // break the loop so only writing one plant
             } else {
                 println!(
@@ -284,21 +284,15 @@ pub fn harvest(plantid: &str) {
             }
         }
     }
-    // remove plant from farm.txt
+    // remove plant from farm.txt.
     if harvestable {
-        // remove first instance in vec
-        //let index: usize = plant_data.iter().position(|x| *x == some_x).unwrap();
-        //let new_data = plant_data.remove(0);
-        // if let Some(index) = plant_data.iter().position(|&x| x.id == 1) {
-        //     plant_data.remove(index);
-        // };
-        plant_data.remove(0);
-
-        let mut string_buf = String::new();
+        plant_data.remove(0); // remove plant
+        let mut string_buf = String::new(); // convert plant data to string so write properly to file
         for plant in plant_data {
             println!("{:?}", plant);
             string_buf = string_buf + &serde_json::to_string(&plant).unwrap();
         }
+        // write updated data to farm.txt
         write_to_farmtxt(string_buf, "farm.txt", true);
     }
 }
@@ -341,6 +335,21 @@ fn read_from_farmtxt(filename: &str) -> Result<Vec<Plant>, std::io::Error> {
     Ok(deserialized_plants)
 }
 
+#[test]
+fn test_read_from_farmtxt() {
+    let result = read_from_farmtxt("farm.txt");
+    let val = match result {
+        Ok(plant_data) => {
+            println!("Plant data: {:?}", plant_data);
+            plant_data
+        }
+        Err(e) => {
+            println!("Error: {:?}", e);
+            vec![]
+        }
+    };
+    assert!(val.is_empty() == false);
+}
 fn write_to_inventorytxt(data: String, filename: &str) {
     // if file does not exist, create it
     if !Path::new(filename).exists() {
@@ -361,3 +370,16 @@ fn write_to_inventorytxt(data: String, filename: &str) {
 }
 
 fn read_from_inventorytxt() {}
+
+fn my_function(a: i32, b: i32) -> i32 {
+    a + b
+}
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_my_function() {
+        assert_eq!(my_function(2, 3), 5);
+    }
+}

@@ -34,7 +34,10 @@ Sequence/User Story 1:
     [X]- if the timestamp has not passed yet, `Growing...` will be displayed the the screen
     [X]- if the timestamp has passed, `Harvestable!` will be displayed
         [X]- remove the plant from farm.txt
-[]- clean up harvest method, remove docs and unneaded code.
+[X]- clean up harvest method, remove docs and unneaded code.
+[]- write tests for harvest and plant methods
+    [] - tests for harvest
+    [] - tests for plant
 
 TODO:
 []- Generate list of plantable plants
