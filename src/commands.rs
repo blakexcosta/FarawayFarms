@@ -335,21 +335,6 @@ fn read_from_farmtxt(filename: &str) -> Result<Vec<Plant>, std::io::Error> {
     Ok(deserialized_plants)
 }
 
-#[test]
-fn test_read_from_farmtxt() {
-    let result = read_from_farmtxt("farm.txt");
-    let val = match result {
-        Ok(plant_data) => {
-            println!("Plant data: {:?}", plant_data);
-            plant_data
-        }
-        Err(e) => {
-            println!("Error: {:?}", e);
-            vec![]
-        }
-    };
-    assert!(val.is_empty() == false);
-}
 fn write_to_inventorytxt(data: String, filename: &str) {
     // if file does not exist, create it
     if !Path::new(filename).exists() {
@@ -370,6 +355,22 @@ fn write_to_inventorytxt(data: String, filename: &str) {
 }
 
 fn read_from_inventorytxt() {}
+
+#[test]
+fn test_read_from_farmtxt() {
+    let result = read_from_farmtxt("farm.txt");
+    let val = match result {
+        Ok(plant_data) => {
+            println!("Plant data: {:?}", plant_data);
+            plant_data
+        }
+        Err(e) => {
+            println!("Error: {:?}", e);
+            vec![]
+        }
+    };
+    assert!(val.is_empty() == false);
+}
 
 fn my_function(a: i32, b: i32) -> i32 {
     a + b
