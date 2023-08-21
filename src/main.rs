@@ -38,12 +38,16 @@ Sequence/User Story 1:
 []- write tests for harvest and plant methods
     [] - tests for harvest
     [] - tests for plant
+    [] - tests for write_to_farmtxt
+    [] - tests for read_from_farmtxt
+    [] - tests for write_to_inventorytxt
+    [] - tests for read_from_inventorytxt
 
 TODO:
 []- Generate list of plantable plants
 []- Experiment with RASCII art implementation (https://github.com/UTFeight/RASCII)
 []- Experiment with RASCII Charism crate implememntation (https://github.com/UTFeight/Charisma)
-
+[] - fix bug where `harvest 1` prints out all items/plants in array. check harvest method
 
 Backlog:
 []- harvestall() command. Harvests all plants on the farm. Example command is: `harvestall 1`. This would harvest all plants that have an id of 1 (i.e zuccinis)

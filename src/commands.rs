@@ -356,31 +356,45 @@ fn write_to_inventorytxt(data: String, filename: &str) {
 
 fn read_from_inventorytxt() {}
 
+// ----------------------------------------
+// TESTS
+
+// write_to_farmtxt tests
+
+// read_from_farmtxt tests
 #[test]
-fn test_read_from_farmtxt() {
+fn test_normal_read_from_farmtxt() {
     let result = read_from_farmtxt("farm.txt");
-    let val = match result {
+    let success: bool = match result {
         Ok(plant_data) => {
             println!("Plant data: {:?}", plant_data);
-            plant_data
+            true
         }
         Err(e) => {
             println!("Error: {:?}", e);
-            vec![]
+            false
         }
     };
-    assert!(val.is_empty() == false);
+    assert!(success);
 }
 
-fn my_function(a: i32, b: i32) -> i32 {
-    a + b
+#[test]
+fn test_read_from_farmtxt_bad_file() {
+    let result = read_from_farmtxt("asdf.txt");
+    let success: bool = match result {
+        Ok(plant_data) => {
+            println!("Plant data: {:?}", plant_data);
+            true
+        }
+        Err(e) => {
+            println!("Error: {:?}", e);
+            false
+        }
+    };
+    assert!(success == false);
 }
-#[cfg(test)]
-mod tests {
-    use super::*;
 
-    #[test]
-    fn test_my_function() {
-        assert_eq!(my_function(2, 3), 5);
-    }
-}
+// write_to_inventorytxt tests
+
+// read_from_inventorytxt tests
+// ----------------------------------------
