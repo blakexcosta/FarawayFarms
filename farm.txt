@@ -1,0 +1,1 @@
+{"id":1,"name":"Zuccini","plant_type":"Zuccini","planted_timestamp":1692827016,"growth_time_sec":10,"harvested_timestamp":1692827026}

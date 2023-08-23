@@ -182,7 +182,7 @@ pub fn move_citizen(colony_instance: Colony, direction: CardinalDirection, step_
 }
 
 /// Used to plant a new plant in the colony
-pub fn plant(plantid: &str) {
+pub fn plant(plantid: &str) -> Result<String, String> {
     println!("plant command called with plantid: {}", plantid);
     // let mut plant: Plant;
     let plant: Plant = match plantid.trim() {
@@ -228,7 +228,7 @@ pub fn plant(plantid: &str) {
     // check if plant is null
     if plant.id == 0 || plant.plant_type == PlantTypes::None {
         println!("No plant Id exists");
-        return;
+        return Err("No plant Id exists".to_string());
     }
 
     // serialize data
@@ -240,11 +240,12 @@ pub fn plant(plantid: &str) {
     println!("Current timestamp is {}", timestamp);
     // write to farm.txt
     write_to_farmtxt(serialized_plant_data, "farm.txt", false);
+    return Ok("".to_string());
 }
 
 /// Attempts to harvest all plant in the format of `harvest <plantid>`
 /// Ex:) `harvest 1`
-pub fn harvest(plantid: &str) {
+pub fn harvest(plantid: &str) -> Result<String, String> {
     // inventory filename
     let inventory_filename = "inventory.txt";
     // read from farm.txt
@@ -262,7 +263,7 @@ pub fn harvest(plantid: &str) {
     // check if vector is empty
     if plant_data.is_empty() {
         println!("Error when Reading! Empty plant data vec as a result.");
-        return;
+        return Err("Error when Reading! Empty plant data vec as a result.".to_string());
     }
     // determine first possible, available plant if plant is harvestable
     let mut harvestable = false;
@@ -294,6 +295,9 @@ pub fn harvest(plantid: &str) {
         }
         // write updated data to farm.txt
         write_to_farmtxt(string_buf, "farm.txt", true);
+        return Ok("".to_string());
+    } else {
+        return Err("Plant is not harvestable!".to_string());
     }
 }
 
@@ -357,44 +361,200 @@ fn write_to_inventorytxt(data: String, filename: &str) {
 fn read_from_inventorytxt() {}
 
 // ----------------------------------------
-// TESTS
+#[cfg(test)]
+mod tests {
+    // TESTS
+    use super::plant;
+    use super::{harvest, read_from_farmtxt};
 
-// write_to_farmtxt tests
+    // plant function tests
+    // passing
+    #[test]
+    fn test_workingplant_id1() {
+        let success = match plant("1") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        assert_eq!(success, "".to_string());
+    }
+    #[test]
+    fn test_workingplant_id2() {
+        let success = match plant("2") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        assert_eq!(success, "".to_string());
+    }
+    // failing
+    #[test]
+    fn test_failingplant_id_negative() {
+        let failure = match plant("-1") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        assert_ne!(failure, "".to_string()); // should not be identical
+    }
+    #[test]
+    fn test_failingplant_id_large() {
+        let failure = match plant("6942069") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        assert_ne!(failure, "".to_string()); // should not be identical
+    }
 
-// read_from_farmtxt tests
-#[test]
-fn test_normal_read_from_farmtxt() {
-    let result = read_from_farmtxt("farm.txt");
-    let success: bool = match result {
-        Ok(plant_data) => {
-            println!("Plant data: {:?}", plant_data);
-            true
-        }
-        Err(e) => {
-            println!("Error: {:?}", e);
-            false
-        }
-    };
-    assert!(success);
+    // harvest function tests
+    // passing
+    #[test]
+    fn passing_harvest_1() {
+        // plant plants
+        match plant("1") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        match plant("2") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        match plant("1") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        // test a harvest
+        let success = match harvest("1") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        assert_eq!(success, "".to_string());
+    }
+    #[test]
+    fn passing_harvest_2() {
+        // plant plants
+        match plant("1") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        match plant("2") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        match plant("1") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        // test a harvest
+        let success = match harvest("2") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        assert_eq!(success, "".to_string());
+    }
+    // failing
+    #[test]
+    fn failing_harvest_1() {
+        // plant plants
+        match plant("1") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        match plant("2") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        match plant("1") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        // test a harvest
+        let failure = match harvest("12341234") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        assert_ne!(failure, "".to_string()); // it should not be identical
+    }
+    #[test]
+    fn failing_harvest_2() {
+        // plant plants
+        match plant("1") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        match plant("2") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        match plant("1") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        // test a harvest
+        let failure = match harvest("-1") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        assert_ne!(failure, "".to_string()); // it should not be identical
+    }
+    #[test]
+    fn failing_harvest_3() {
+        // plant plants
+        match plant("1") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        match plant("2") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        match plant("1") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        // test a harvest
+        let failure = match harvest("-6942069") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        assert_ne!(failure, "".to_string()); // it should not be identical
+    }
+    // edge cases
+
+    // write_to_farmtxt function tests - only meant to be called in context of plant/harvest oriented methods
+
+    // read_from_farmtxt tests - only meant to be called in context of plant/harvest oriented methods
+    #[test]
+    fn test_normal_read_from_farmtxt() {
+        let result = read_from_farmtxt("farm.txt");
+        let success: bool = match result {
+            Ok(plant_data) => {
+                println!("Plant data: {:?}", plant_data);
+                true
+            }
+            Err(e) => {
+                println!("Error: {:?}", e);
+                false
+            }
+        };
+        assert!(success);
+    }
+    #[test]
+    fn test_read_from_farmtxt_bad_file() {
+        let result = read_from_farmtxt("asdf.txt");
+        let success: bool = match result {
+            Ok(plant_data) => {
+                println!("Plant data: {:?}", plant_data);
+                true
+            }
+            Err(e) => {
+                println!("Error: {:?}", e);
+                false
+            }
+        };
+        assert!(success == false);
+    }
+
+    // write_to_inventorytxt tests - only meant to be called in context of plant/harvest oriented methods
+
+    // read_from_inventorytxt tests - only meant to be called in context of plant/harvest oriented methods
 }
 
-#[test]
-fn test_read_from_farmtxt_bad_file() {
-    let result = read_from_farmtxt("asdf.txt");
-    let success: bool = match result {
-        Ok(plant_data) => {
-            println!("Plant data: {:?}", plant_data);
-            true
-        }
-        Err(e) => {
-            println!("Error: {:?}", e);
-            false
-        }
-    };
-    assert!(success == false);
-}
-
-// write_to_inventorytxt tests
-
-// read_from_inventorytxt tests
 // ----------------------------------------

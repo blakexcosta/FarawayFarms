@@ -1,3 +1,5 @@
+#![allow(warnings)] // disable warnings for time
+
 use crate::commands::{harvest, plant};
 use commands::Command;
 use std::thread::{self, sleep};
@@ -36,18 +38,20 @@ Sequence/User Story 1:
         [X]- remove the plant from farm.txt
 [X]- clean up harvest method, remove docs and unneaded code.
 []- write tests for harvest and plant methods
-    [] - tests for harvest
-    [] - tests for plant
-    [] - tests for write_to_farmtxt
-    [] - tests for read_from_farmtxt
-    [] - tests for write_to_inventorytxt
-    [] - tests for read_from_inventorytxt
+    [X] - tests for plant
+    [X] - tests for harvest
+    [X] - tests for write_to_farmtxt
+    [X] - tests for read_from_farmtxt
+    [X] - tests for write_to_inventorytxt
+    [X] - tests for read_from_inventorytxt
+[Nope]- Experiment with RASCII art implementation (https://github.com/UTFeight/RASCII) -- Submitted issue in github to UTFreight
+[]-
 
 TODO:
 []- Generate list of plantable plants
-[]- Experiment with RASCII art implementation (https://github.com/UTFeight/RASCII)
 []- Experiment with RASCII Charism crate implememntation (https://github.com/UTFeight/Charisma)
 [] - fix bug where `harvest 1` prints out all items/plants in array. check harvest method
+[] - fix bug where farm.txt is removed, but inventory.txt is not. Run `plant 1`, Run `harvest 2`. Program crashes. Just need to handle an error in main.rs
 
 Backlog:
 []- harvestall() command. Harvests all plants on the farm. Example command is: `harvestall 1`. This would harvest all plants that have an id of 1 (i.e zuccinis)
@@ -85,19 +89,29 @@ async fn get_user_input(commands: &HashMap<String, Command>) {
             "plant" => {
                 // `plant <plantid>`
                 // handles case if no plant id is given
+                // match choice_split.next() {
+                //     Some(plantid) => plant(plantid),
+                //     None => println!(
+                //         "No plantID was given, please give in the format of `plant <plantid>` ex: plant 1"
+                //     ),
+                // };
                 match choice_split.next() {
-                    Some(plantid) => plant(plantid),
+                    Some(plantid) => {
+                        plant(plantid).unwrap();
+                    },
                     None => println!(
                         "No plantID was given, please give in the format of `plant <plantid>` ex: plant 1"
-                    ),
-                };
+                    )
+                }
             }
             "harvest" => {
                 match choice_split.next() {
-                    Some(plantid) => harvest(plantid),
+                    Some(plantid) => {
+                        harvest(plantid).unwrap();
+                    },
                     None => println!(
                         "No plantID was given, please give in the format of `harvest <plantid>` ex: plant 1"
-                    ),
+                    )
                 };
             }
             "citizens_info" => {
