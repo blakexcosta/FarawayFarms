@@ -20,52 +20,66 @@ mod planet;
 mod plants;
 
 /*
-TODO:
+IN PROGRESS:
+[] - Grid System
+    [] - Design grids in x by x area
 
-Sequence/User Story 1:
-[X]- Program starts up, waits for user input
-[X]- `plant zuccini` command plants zuccini
-    [X]- create plant command in the format of `plant <plantid>`
-[X]- information on what was planted is written to a farm.txt
-    [X]- research actual timestamps and include in txt files
-    [X]- calculate the difference between timestamps
-[X]- file with timestamp, plant name, plant id, growth time, harvest timestamp (i.e. the time the plant will be ready to be harvested )
-[X]-  write harvest method/command. command will attempt to harvest the plant, remove from farm.txt and store that in inventory.txt with the same information as was in farm.txt
-    [X]- create new `harvest <plantid>` called harvest().
-    [X] - read farm.txt (read_from_farmtxt())
-    [X]- if the timestamp has not passed yet, `Growing...` will be displayed the the screen
-    [X]- if the timestamp has passed, `Harvestable!` will be displayed
-        [X]- remove the plant from farm.txt
-[X]- clean up harvest method, remove docs and unneaded code.
-[X]- write tests for harvest and plant methods
-    [X] - tests for plant
-    [X] - tests for harvest
-    [X] - tests for write_to_farmtxt
-    [X] - tests for read_from_farmtxt
-    [X] - tests for write_to_inventorytxt
-    [X] - tests for read_from_inventorytxt
-[Nope]- Experiment with RASCII art implementation (https://github.com/UTFeight/RASCII) -- Submitted issue in github to UTFreight
-[Nope]- Check out rascii
-[Nope]- draw new poopoo art -> ascii art?
-[X]- draw new poopoo art
-[X]- handle exceptions with plant and harvest commands
-[X] - fix bug where farm.txt is removed, but inventory.txt is not. Run `plant 1`, Run `harvest 2`. Program crashes. Just need to handle an error in main.rs
-[X] - fix bug where `harvest 1` prints out all items/plants in array. check harvest method
 
 TODO:
-
-Backlog (v0.5):
-[]- harvestall() command. Harvests all plants on the farm. Example command is: `harvestall 1`. This would harvest all plants that have an id of 1 (i.e zuccinis)
+Backlog:
 []- Add a grid of plantable options
-[]- Generate list of plantable plants + their harvest times
-[]- Market where can sell plants.
-Player-driven-market
-Expanded local saves
+[]- Generate list of plantable plants + their harvest times with
+[]- harvestall() command. Harvests all plants on the farm. Example command is: `harvestall 1`. This would harvest all plants that have an id of 1 (i.e zuccinis)
 [] - Garden/animal ascii art
     []- print out information on specific plant + prints out rascii art associated with said plant.
 []- add localized, compact sqlite/sqlx db. Otherwise txt files gonna be huge eventually.
 []- Remote saves (sqlite/sqlx/postgres)?...
 []- Experiment with RASCII Charism crate implememntation (https://github.com/UTFeight/Charisma)
+Player-driven-market
+    []- Market where can sell plants.
+Expanded local saves
+
+
+Alpha:
+Grid
+Inventory
+Water Generation
+Money/Value
+Plant
+Watering
+Harvest
+TUI - Experimentation (ratatui-org/ratatui: Rust library to build rich terminal user interfaces (TUIs) and dashboards (github.com)
+RASCII - Experimentation
+
+
+Beta:
+Signup
+Login
+Upgrade
+Market
+In Game Tutorial/Online Docs
+
+
+Release:
+Signup for new accounts
+login capabilities via terminal
+username x password
+password/account recovery
+Ability to plant items
+maintaining items via terminal (watering)
+Water Absorption rates for plants
+Fertilizers for plants
+Ability to harvest items for value
+value/money system
+ascii art in terminal for each plant
+docs for each plant
+art for each stage of plant life cycle
+realtime player driven market (Rocket API/Backend with Postgres/Mongo)
+buy orders (`buy zuccini 2dollars at price of )
+sell orders (`sell zuccini 2dollars 5`)
+Grid System
+Farm size/grid (plant from grid, harvest from grid)
+10x10 grid to start
 
 
 
