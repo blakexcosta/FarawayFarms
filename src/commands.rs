@@ -252,7 +252,7 @@ pub fn harvest(plantid: &str) -> Result<String, String> {
     let mut plant_data = read_from_farmtxt("farm.txt");
     let mut plant_data = match plant_data {
         Ok(plant_data) => {
-            println!("Plant data: {:?}", plant_data);
+            //println!("Plant data: {:?}", plant_data);
             plant_data
         }
         Err(e) => {
@@ -290,7 +290,7 @@ pub fn harvest(plantid: &str) -> Result<String, String> {
         plant_data.remove(0); // remove plant
         let mut string_buf = String::new(); // convert plant data to string so write properly to file
         for plant in plant_data {
-            println!("{:?}", plant);
+            // println!("{:?}", plant);
             string_buf = string_buf + &serde_json::to_string(&plant).unwrap();
         }
         // write updated data to farm.txt

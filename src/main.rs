@@ -49,20 +49,26 @@ Sequence/User Story 1:
 [Nope]- draw new poopoo art -> ascii art?
 [X]- draw new poopoo art
 [X]- handle exceptions with plant and harvest commands
-[] - fix bug where farm.txt is removed, but inventory.txt is not. Run `plant 1`, Run `harvest 2`. Program crashes. Just need to handle an error in main.rs
+[X] - fix bug where farm.txt is removed, but inventory.txt is not. Run `plant 1`, Run `harvest 2`. Program crashes. Just need to handle an error in main.rs
+[X] - fix bug where `harvest 1` prints out all items/plants in array. check harvest method
 
 TODO:
-[]- Generate list of plantable plants
-[]- Experiment with RASCII Charism crate implememntation (https://github.com/UTFeight/Charisma)
-[] - fix bug where `harvest 1` prints out all items/plants in array. check harvest method
 
-Backlog:
+Backlog (v0.5):
 []- harvestall() command. Harvests all plants on the farm. Example command is: `harvestall 1`. This would harvest all plants that have an id of 1 (i.e zuccinis)
-[]- add localized, compact sqlite/sqlx db. Otherwise txt files gonna be huge eventually.
+[]- Add a grid of plantable options
+[]- Generate list of plantable plants + their harvest times
+[]- Market where can sell plants.
 Player-driven-market
-Remote saves (sqlite/sqlx)
 Expanded local saves
-Garden/animal ascii art
+[] - Garden/animal ascii art
+    []- print out information on specific plant + prints out rascii art associated with said plant.
+[]- add localized, compact sqlite/sqlx db. Otherwise txt files gonna be huge eventually.
+[]- Remote saves (sqlite/sqlx/postgres)?...
+[]- Experiment with RASCII Charism crate implememntation (https://github.com/UTFeight/Charisma)
+
+
+
 
 
 
@@ -90,14 +96,6 @@ async fn get_user_input(commands: &HashMap<String, Command>) {
         match choice_split.next().unwrap().to_lowercase().trim() {
             "help" => commands::iterate_over_commands(commands),
             "plant" => {
-                // `plant <plantid>`
-                // handles case if no plant id is given
-                // match choice_split.next() {
-                //     Some(plantid) => plant(plantid),
-                //     None => println!(
-                //         "No plantID was given, please give in the format of `plant <plantid>` ex: plant 1"
-                //     ),
-                // };
                 match choice_split.next() {
                     Some(plantid) => {
                         // catch error from plant function
