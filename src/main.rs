@@ -37,7 +37,7 @@ Sequence/User Story 1:
     [X]- if the timestamp has passed, `Harvestable!` will be displayed
         [X]- remove the plant from farm.txt
 [X]- clean up harvest method, remove docs and unneaded code.
-[]- write tests for harvest and plant methods
+[X]- write tests for harvest and plant methods
     [X] - tests for plant
     [X] - tests for harvest
     [X] - tests for write_to_farmtxt
@@ -45,13 +45,16 @@ Sequence/User Story 1:
     [X] - tests for write_to_inventorytxt
     [X] - tests for read_from_inventorytxt
 [Nope]- Experiment with RASCII art implementation (https://github.com/UTFeight/RASCII) -- Submitted issue in github to UTFreight
-[]-
+[Nope]- Check out rascii
+[Nope]- draw new poopoo art -> ascii art?
+[X]- draw new poopoo art
+[X]- handle exceptions with plant and harvest commands
+[] - fix bug where farm.txt is removed, but inventory.txt is not. Run `plant 1`, Run `harvest 2`. Program crashes. Just need to handle an error in main.rs
 
 TODO:
 []- Generate list of plantable plants
 []- Experiment with RASCII Charism crate implememntation (https://github.com/UTFeight/Charisma)
 [] - fix bug where `harvest 1` prints out all items/plants in array. check harvest method
-[] - fix bug where farm.txt is removed, but inventory.txt is not. Run `plant 1`, Run `harvest 2`. Program crashes. Just need to handle an error in main.rs
 
 Backlog:
 []- harvestall() command. Harvests all plants on the farm. Example command is: `harvestall 1`. This would harvest all plants that have an id of 1 (i.e zuccinis)
@@ -97,7 +100,11 @@ async fn get_user_input(commands: &HashMap<String, Command>) {
                 // };
                 match choice_split.next() {
                     Some(plantid) => {
-                        plant(plantid).unwrap();
+                        // catch error from plant function
+                        match plant(plantid) {
+                            Ok(_) => (),
+                            Err(e) => println!("{}", e),
+                        }
                     },
                     None => println!(
                         "No plantID was given, please give in the format of `plant <plantid>` ex: plant 1"
@@ -107,7 +114,11 @@ async fn get_user_input(commands: &HashMap<String, Command>) {
             "harvest" => {
                 match choice_split.next() {
                     Some(plantid) => {
-                        harvest(plantid).unwrap();
+                        // catch error from harvest function
+                        match harvest(plantid) {
+                            Ok(_) => (),
+                            Err(e) => println!("{}", e),
+                        }
                     },
                     None => println!(
                         "No plantID was given, please give in the format of `harvest <plantid>` ex: plant 1"
