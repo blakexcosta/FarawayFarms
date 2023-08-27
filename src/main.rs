@@ -9,6 +9,7 @@ use std::time::{Duration, Instant};
 // use futures::{stream::TryStreamExt, io};
 use crate::db::db_helper;
 use rand::{thread_rng, Rng};
+use rascii_art::{render_to, RenderOptions};
 use std::collections::HashMap;
 use std::io::Write;
 
@@ -21,8 +22,15 @@ mod plants;
 
 /*
 IN PROGRESS:
+[X] - Experiment with RASCII
+[] - fix bug where harvest method crashes when improper plant id is given in character format
+[] - Experiment with RASCII Charism crate implememntation (https://github.com/UTFeight/Charisma)
+[] - RASCII Implementation with plants
 [] - Grid System
     [] - Design grids in x by x area
+    [] - Create grid.rs file
+    [] - Map out interfaces
+    [] - Implement accordingly
 
 
 TODO:
@@ -34,7 +42,6 @@ Backlog:
     []- print out information on specific plant + prints out rascii art associated with said plant.
 []- add localized, compact sqlite/sqlx db. Otherwise txt files gonna be huge eventually.
 []- Remote saves (sqlite/sqlx/postgres)?...
-[]- Experiment with RASCII Charism crate implememntation (https://github.com/UTFeight/Charisma)
 Player-driven-market
     []- Market where can sell plants.
 Expanded local saves
@@ -134,6 +141,35 @@ async fn get_user_input(commands: &HashMap<String, Command>) {
                     },
                     None => println!(
                         "No plantID was given, please give in the format of `harvest <plantid>` ex: plant 1"
+                    )
+                };
+            }
+            "render" => {
+                match choice_split.next() {
+                    Some(filepath) => {
+                        // catch error from harvest function
+                        
+                        let mut buffer = String::new();
+
+                        render_to(
+                            //r"/path/to/image.png",
+                            r".\resources\tree.jpg",
+                            // filepath.trim(),
+                            &mut buffer,
+                            &RenderOptions::new()
+                                .width(100)
+                                //.height(35)
+                                .colored(true)
+                                // .charset(&[".", "-", "|", "_", "#", "=",]),
+                                // .charset(&[".", ",", "-", "*", "|", "_", "#", "=", "<",">","/","L"]),
+                                // .charset(&[".", ",", "-", "*", "£", "$", "#"]),
+                        )
+                        .unwrap();
+
+                        println!("{}", buffer);
+                    },
+                    None => println!(
+                        "No image file path was given, please give in the format of `render <filepath>` \nex:\n\t`render ./resouces/dogwater_beach.jpg`\nOR\n\t`render .\\resouces\\dogwater_beach.jpg`"
                     )
                 };
             }
