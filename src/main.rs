@@ -23,7 +23,7 @@ mod plants;
 /*
 IN PROGRESS:
 [X] - Experiment with RASCII
-[] - fix bug where harvest method crashes when improper plant id is given in character format
+[X] - fix bug where harvest method crashes when improper plant id is given in character format
 [] - Experiment with RASCII Charism crate implememntation (https://github.com/UTFeight/Charisma)
 [] - RASCII Implementation with plants
 [] - Grid System
@@ -31,6 +31,9 @@ IN PROGRESS:
     [] - Create grid.rs file
     [] - Map out interfaces
     [] - Implement accordingly
+[] - Fix tests so they don't write to farm.txt and inventory.txt (lookup rust staging area for tests?). Happens in plant + harvest methods
+    [] - Fix plant tests
+    [] - Fix harvest tests
 
 
 TODO:
@@ -153,7 +156,9 @@ async fn get_user_input(commands: &HashMap<String, Command>) {
 
                         render_to(
                             //r"/path/to/image.png",
-                            r".\resources\tree.jpg",
+                            r".\resources\tree.jpg
+                            
+                            \",
                             // filepath.trim(),
                             &mut buffer,
                             &RenderOptions::new()

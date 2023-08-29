@@ -183,6 +183,9 @@ pub fn move_citizen(colony_instance: Colony, direction: CardinalDirection, step_
 
 /// Used to plant a new plant in the colony
 pub fn plant(plantid: &str) -> Result<String, String> {
+    // check if plantid is an integer and propogate error up
+    check_is_i32(plantid)?;
+
     println!("plant command called with plantid: {}", plantid);
     // let mut plant: Plant;
     let plant: Plant = match plantid.trim() {
@@ -246,6 +249,9 @@ pub fn plant(plantid: &str) -> Result<String, String> {
 /// Attempts to harvest all plant in the format of `harvest <plantid>`
 /// Ex:) `harvest 1`
 pub fn harvest(plantid: &str) -> Result<String, String> {
+    // check if plantid is an integer and propogate error up
+    check_is_i32(plantid)?;
+
     // inventory filename
     let inventory_filename = "inventory.txt";
     // read from farm.txt
@@ -298,6 +304,31 @@ pub fn harvest(plantid: &str) -> Result<String, String> {
         return Ok("".to_string());
     } else {
         return Err("Plant is not harvestable!".to_string());
+    }
+}
+
+/// this is a extra helper function to check if plantid is an integer with some added fucntionality printed to screen
+/// Used to call inline on function
+fn check_is_i32(plantid: &str) -> Result<(), String> {
+    if is_i32(plantid) == false {
+        //println!("plantid is not an integer");
+        return Err("plantid is not an integer".to_string());
+    } else {
+        return Ok(());
+    }
+}
+
+/// checks is a plantid is an integer and returns a bool if not
+fn is_i32(plantid: &str) -> bool {
+    let val = match plantid.trim().parse::<i32>() {
+        Ok(val) => val,
+        Err(_) => -1,
+    };
+
+    if val == -1 {
+        return false;
+    } else {
+        return true;
     }
 }
 
@@ -367,7 +398,7 @@ mod tests {
     use super::plant;
     use super::{harvest, read_from_farmtxt};
 
-    // plant function tests
+    // PLANT function tests
     // passing
     #[test]
     fn test_workingplant_id1() {
@@ -402,8 +433,16 @@ mod tests {
         };
         assert_ne!(failure, "".to_string()); // should not be identical
     }
+    #[test]
+    fn plant_throws_error_on_bad_plantid() {
+        let failure = match plant("a") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        assert_ne!(failure, "".to_string()); // should not be identical
+    }
 
-    // harvest function tests
+    // HARVEST function tests
     // passing
     #[test]
     fn passing_harvest_1() {
@@ -516,7 +555,14 @@ mod tests {
         };
         assert_ne!(failure, "".to_string()); // it should not be identical
     }
-    // edge cases
+    #[test]
+    fn harvest_throws_error_on_bad_plantid() {
+        let failure = match harvest("a") {
+            Ok(str) => str,
+            Err(e) => e,
+        };
+        assert_ne!(failure, "".to_string()); // should not be identical
+    }
 
     // write_to_farmtxt function tests - only meant to be called in context of plant/harvest oriented methods
 
