@@ -24,7 +24,7 @@ mod plants;
 IN PROGRESS:
 [X] - Experiment with RASCII
 [X] - fix bug where harvest method crashes when improper plant id is given in character format
-[] - Experiment with RASCII Charism crate implememntation (https://github.com/UTFeight/Charisma)
+[] - Experiment with RASCII Charisma crate implememntation (https://github.com/UTFeight/Charisma)
 [] - RASCII Implementation with plants
 [] - Grid System
     [] - Design grids in x by x area
@@ -156,16 +156,14 @@ async fn get_user_input(commands: &HashMap<String, Command>) {
 
                         render_to(
                             //r"/path/to/image.png",
-                            r".\resources\tree.jpg
-                            
-                            \",
+                            r".\resources\discipled.png",
                             // filepath.trim(),
                             &mut buffer,
                             &RenderOptions::new()
-                                .width(100)
+                                .width(200) // recommend width of 50, 75 or 100
                                 //.height(35)
                                 .colored(true)
-                                // .charset(&[".", "-", "|", "_", "#", "=",]),
+                                //.charset(&[".", "-", "|", "_", "#", "=",]),
                                 // .charset(&[".", ",", "-", "*", "|", "_", "#", "=", "<",">","/","L"]),
                                 // .charset(&[".", ",", "-", "*", "£", "$", "#"]),
                         )
