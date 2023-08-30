@@ -24,8 +24,7 @@ mod plants;
 IN PROGRESS:
 [X] - Experiment with RASCII
 [X] - fix bug where harvest method crashes when improper plant id is given in character format
-[] - Experiment with RASCII Charisma crate implememntation (https://github.com/UTFeight/Charisma)
-[] - RASCII Implementation with plants
+[] - clean up current rascii code
 [] - Grid System
     [] - Design grids in x by x area
     [] - Create grid.rs file
@@ -38,6 +37,7 @@ IN PROGRESS:
 
 TODO:
 Backlog:
+[NOPE] - Experiment with RASCII Charisma crate implememntation (https://github.com/UTFeight/Charisma) (check in about 1-2 weeks)
 []- Add a grid of plantable options
 []- Generate list of plantable plants + their harvest times with
 []- harvestall() command. Harvests all plants on the farm. Example command is: `harvestall 1`. This would harvest all plants that have an id of 1 (i.e zuccinis)
@@ -48,7 +48,7 @@ Backlog:
 Player-driven-market
     []- Market where can sell plants.
 Expanded local saves
-
+[] - https://github.com/ratatui-org/ratatui alpha implementation
 
 Alpha:
 Grid
@@ -58,6 +58,9 @@ Money/Value
 Plant
 Watering
 Harvest
+[] - RASCII alpha placeholder implementation with plants
+    [] - `showplant id`
+    [] - display the plant at its current stage
 TUI - Experimentation (ratatui-org/ratatui: Rust library to build rich terminal user interfaces (TUIs) and dashboards (github.com)
 RASCII - Experimentation
 
@@ -156,12 +159,12 @@ async fn get_user_input(commands: &HashMap<String, Command>) {
 
                         render_to(
                             //r"/path/to/image.png",
-                            r".\resources\discipled.png",
-                            // filepath.trim(),
+                            //r".\resources\castle.png",
+                            filepath.trim(),
                             &mut buffer,
                             &RenderOptions::new()
-                                .width(200) // recommend width of 50, 75 or 100
-                                //.height(35)
+                                .width(50) // recommend width of 50, 75 or 100
+                                //.height(60)
                                 .colored(true)
                                 //.charset(&[".", "-", "|", "_", "#", "=",]),
                                 // .charset(&[".", ",", "-", "*", "|", "_", "#", "=", "<",">","/","L"]),
