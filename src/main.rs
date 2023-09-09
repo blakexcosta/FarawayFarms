@@ -33,6 +33,7 @@ IN PROGRESS:
     [] - Map out interfaces
         [] - Add Plantable Trait to vector of grid.rs plants
     [] - Implement accordingly
+        [] - Add Tests for grid function
 [] - Fix tests so they don't write to farm.txt and inventory.txt (lookup rust staging area for tests?). Happens in plant + harvest methods
     [] - Fix plant tests
     [] - Fix harvest tests
@@ -183,11 +184,10 @@ async fn get_user_input(commands: &HashMap<String, Command>) {
                 };
             }
             "grid" => {
+                // get x
                 match choice_split.next() {
                     Some(x_val) => {
-                        // catch error from harvest function
-                        let mut buffer = String::new();
-                        //println!("x_val: {}", x_val);
+                        // get y
                         match choice_split.next() {
                             Some(y_val) => {
                                 //println!("y_val: {}", y_val);
