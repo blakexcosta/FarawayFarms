@@ -12,7 +12,9 @@ use rand::{thread_rng, Rng};
 use rascii_art::{render_to, RenderOptions};
 use std::collections::HashMap;
 use std::io::Write;
+use grid::*;
 
+mod grid;
 mod colony;
 mod commands;
 mod coordinates;
@@ -102,6 +104,7 @@ Farm size/grid (plant from grid, harvest from grid)
 */
 // reviewing some docs
 async fn get_user_input(commands: &HashMap<String, Command>) {
+    grid::generate_grid(5, 3);
     println!("FARAWAY FARMS REMOTE MANAGEMENT TERMINAL");
     println!("Welcome to Faraway Farms Remote Management Terminal! Type your commands are Below:");
     // start program and get user input
@@ -177,6 +180,23 @@ async fn get_user_input(commands: &HashMap<String, Command>) {
                     None => println!(
                         "No image file path was given, please give in the format of `render <filepath>` \nex:\n\t`render ./resouces/dogwater_beach.jpg`\nOR\n\t`render .\\resouces\\dogwater_beach.jpg`"
                     )
+                };
+            }
+            "grid" => {
+                match choice_split.next() {
+                    Some(x_val) => {
+                        // catch error from harvest function
+                        let mut buffer = String::new();
+                        //println!("x_val: {}", x_val);
+                        match choice_split.next() {
+                            Some(y_val) => {
+                                //println!("y_val: {}", y_val);
+                                grid::generate_grid(x_val.trim().parse().unwrap(), y_val.trim().parse().unwrap())
+                            }
+                            None => println!("No y_val given")
+                        }
+                    },
+                    None => println!("No x_val given")
                 };
             }
             "citizens_info" => {
