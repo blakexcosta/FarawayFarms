@@ -31,6 +31,7 @@ IN PROGRESS:
     [] - Design grids in x by x area
     [] - Create grid.rs file
     [] - Map out interfaces
+        [] - Add Plantable Trait to vector of grid.rs plants
     [] - Implement accordingly
 [] - Fix tests so they don't write to farm.txt and inventory.txt (lookup rust staging area for tests?). Happens in plant + harvest methods
     [] - Fix plant tests
@@ -104,7 +105,6 @@ Farm size/grid (plant from grid, harvest from grid)
 */
 // reviewing some docs
 async fn get_user_input(commands: &HashMap<String, Command>) {
-    grid::generate_grid(5, 3);
     println!("FARAWAY FARMS REMOTE MANAGEMENT TERMINAL");
     println!("Welcome to Faraway Farms Remote Management Terminal! Type your commands are Below:");
     // start program and get user input
@@ -191,7 +191,28 @@ async fn get_user_input(commands: &HashMap<String, Command>) {
                         match choice_split.next() {
                             Some(y_val) => {
                                 //println!("y_val: {}", y_val);
-                                grid::generate_grid(x_val.trim().parse().unwrap(), y_val.trim().parse().unwrap())
+                                let row: i32 = match x_val.trim().parse() {
+                                    Ok(val) => val,
+                                    Err(_) => {
+                                        println!("Invalid x_val");
+                                        0
+                                    }
+                                };
+                                let column: i32 = match y_val.trim().parse() {
+                                    Ok(val) => val,
+                                    Err(_) => {
+                                        println!("Invalid y_val");
+                                        0
+                                    }
+                                };
+                                // check values are valid
+                                if row == 0 || column == 0 {
+                                }
+                                else{
+                                    // generate grid
+                                    grid::print_grid(&grid::generate_grid(row, column, false));
+
+                                }
                             }
                             None => println!("No y_val given")
                         }
