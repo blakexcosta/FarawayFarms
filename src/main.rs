@@ -28,10 +28,10 @@ IN PROGRESS:
 [X] - fix bug where harvest method crashes when improper plant id is given in character format
 [] - clean up current rascii code
 [] - Grid System
-    [] - Design grids in x by x area
-    [] - Create grid.rs file
-    [] - Map out interfaces
-        [] - Add Plantable Trait to vector of grid.rs plants
+    [X] - Design grids in x by x area
+    [X] - Create grid.rs file
+    [X] - Map out interfaces
+        [NOPE] - Add Plantable Trait to vector of grid.rs plants
     [] - Implement accordingly
         [] - Add Tests for grid function
 [] - Fix tests so they don't write to farm.txt and inventory.txt (lookup rust staging area for tests?). Happens in plant + harvest methods
