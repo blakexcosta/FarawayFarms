@@ -42,6 +42,24 @@ pub fn traverse_grid(x: usize, y: usize, matrix: &Vec<Vec<Box<Plant>>>) -> Resul
     return Ok(*unboxed_val);
 }
 
+/// updates in the format of X row by Y column. Starting at the top left, and going to the bottom right
+/// for example 1,2 would be the first row, second column
+pub fn update_grid(
+    x: usize,
+    y: usize,
+    matrix: &mut Vec<Vec<Box<Plant>>>,
+    new_element: Plant,
+) -> Result<String, String> {
+    // checks to make sure the inputs will not be out of bounds and throw a given error
+    if x <= 0 || y <= 0 {
+        return Err("Invalid input of 0 or less".to_string());
+    }
+
+    // value that WAS replace
+    let new_value_res = std::mem::replace(&mut matrix[x - 1][y - 1], Box::new(new_element));
+    return Ok("".to_string()); // return empty to_string indicating no error
+}
+
 #[cfg(test)]
 mod tests {
     // TESTS

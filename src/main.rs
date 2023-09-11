@@ -1,6 +1,7 @@
 #![allow(warnings)] // disable warnings for time
 
 use crate::commands::{harvest, plant};
+use crate::plants::{Plant, PlantTypes};
 use commands::Command;
 use std::thread::{self, sleep};
 use std::time::{Duration, Instant};
@@ -33,8 +34,12 @@ IN PROGRESS:
     [X] - Map out interfaces
         [NOPE] - Add Plantable Trait to vector of grid.rs plants
     [] - Implement accordingly
-        [] - Implement traverse_grid
-        [] - Create update_grid method to change the plant in there.
+        [X] - Implement traverse_grid
+        [X] - Create update_grid method to change the plant in there.
+        [] - render grid to the screen in this format, with X's indicating planted item
+            [_][X][_]
+            [_][X][_]
+            [_][_][X]
         [] - Add Tests for grid function
 
 
@@ -213,9 +218,19 @@ async fn get_user_input(commands: &HashMap<String, Command>) {
                                 }
                                 else{
                                     // generate grid
-                                    let grid = grid::generate_grid(row, column, false);
+                                    let mut grid = grid::generate_grid(row, column, false);
                                     grid::print_grid(&grid);
-                                    println!("{:?}",grid::traverse_grid((row).try_into().unwrap(), (column).try_into().unwrap(), &grid));
+                                    //println!("{:?}\n",grid::traverse_grid((row).try_into().unwrap(), (column).try_into().unwrap(), &grid));
+                                    grid::update_grid(1, 1, &mut grid, Plant{
+                                        id: 50,
+                                        name: "test".to_string(),
+                                        plant_type: PlantTypes::Zuccini,
+                                        planted_timestamp: 0,
+                                        growth_time_sec: 0,
+                                        harvested_timestamp: 0
+                                    });
+                                    println!("\n");
+                                    grid::print_grid(&grid);
                                 }
                             }
                             None => println!("No y_val given")
