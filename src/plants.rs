@@ -2,8 +2,7 @@ use chrono::offset::Utc;
 use serde::{Deserialize, Serialize};
 use serde_json;
 
-pub trait Plantable: Clone{
-}
+pub trait Plantable: Clone {}
 
 #[derive(Debug, PartialEq, Serialize, Deserialize, Clone, Copy)]
 pub enum PlantTypes {
@@ -25,15 +24,14 @@ pub struct Plant {
 impl Plant {
     pub fn default() -> Self {
         Plant {
-            id: 0,
+            id: -1,
             name: "".to_string(),
             plant_type: PlantTypes::None,
-            planted_timestamp: 0,
-            growth_time_sec: 0,
-            harvested_timestamp: 0,
+            planted_timestamp: -1,
+            growth_time_sec: -1,
+            harvested_timestamp: -1,
         }
     }
 }
 
-impl Plantable for Plant {
-}
+impl Plantable for Plant {}

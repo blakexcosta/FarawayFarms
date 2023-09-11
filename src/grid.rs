@@ -28,9 +28,18 @@ pub fn print_grid(matrix: &Vec<Vec<Box<Plant>>>) {
         println!("{:?}", row);
     }
 }
-pub fn traverse_grid(x: i32, y: i32) {
-    // TODO: Implement
-    // this will traverse the grid in X (horizontal) and Y (vertical)
+
+/// WARNING: RETURNS A CLONE BECAUSE OF SHARED REFERENCE
+/// This is 1 indexed instead of zero indexed for user simplicity
+pub fn traverse_grid(x: usize, y: usize, matrix: &Vec<Vec<Box<Plant>>>) -> Result<Plant, String> {
+    // checks to make sure the inputs will not be out of bounds and throw a given error
+    if x <= 0 || y <= 0 {
+        return Err("Invalid input of 0 or less".to_string());
+    }
+    // return index -1 as we expect the user to give inputs like 1,1 to retrieve element at 0,0
+    let val = matrix.get(x - 1).unwrap().get(y - 1).unwrap();
+    let unboxed_val = val.clone();
+    return Ok(*unboxed_val);
 }
 
 #[cfg(test)]

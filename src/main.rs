@@ -26,29 +26,32 @@ mod plants;
 IN PROGRESS:
 [X] - Experiment with RASCII
 [X] - fix bug where harvest method crashes when improper plant id is given in character format
-[] - clean up current rascii code
+[X] - clean up current rascii code
 [] - Grid System
     [X] - Design grids in x by x area
     [X] - Create grid.rs file
     [X] - Map out interfaces
         [NOPE] - Add Plantable Trait to vector of grid.rs plants
     [] - Implement accordingly
+        [] - Implement traverse_grid
+        [] - Create update_grid method to change the plant in there.
         [] - Add Tests for grid function
-[] - Fix tests so they don't write to farm.txt and inventory.txt (lookup rust staging area for tests?). Happens in plant + harvest methods
-    [] - Fix plant tests
-    [] - Fix harvest tests
+
 
 
 TODO:
 Backlog:
 [NOPE] - Experiment with RASCII Charisma crate implememntation (https://github.com/UTFeight/Charisma) (check in about 1-2 weeks)
-[]- Add a grid of plantable options
+[X]- Add a grid of plantable options
 []- Generate list of plantable plants + their harvest times with
 []- harvestall() command. Harvests all plants on the farm. Example command is: `harvestall 1`. This would harvest all plants that have an id of 1 (i.e zuccinis)
 [] - Garden/animal ascii art
     []- print out information on specific plant + prints out rascii art associated with said plant.
 []- add localized, compact sqlite/sqlx db. Otherwise txt files gonna be huge eventually.
 []- Remote saves (sqlite/sqlx/postgres)?...
+[] - Fix tests so they don't write to farm.txt and inventory.txt (lookup rust staging area for tests?). Happens in plant + harvest methods
+    [] - Fix plant tests
+    [] - Fix harvest tests
 Player-driven-market
     []- Market where can sell plants.
 Expanded local saves
@@ -210,8 +213,9 @@ async fn get_user_input(commands: &HashMap<String, Command>) {
                                 }
                                 else{
                                     // generate grid
-                                    grid::print_grid(&grid::generate_grid(row, column, false));
-
+                                    let grid = grid::generate_grid(row, column, false);
+                                    grid::print_grid(&grid);
+                                    println!("{:?}",grid::traverse_grid((row).try_into().unwrap(), (column).try_into().unwrap(), &grid));
                                 }
                             }
                             None => println!("No y_val given")
