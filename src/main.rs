@@ -25,9 +25,6 @@ mod plants;
 
 /*
 IN PROGRESS:
-[X] - Experiment with RASCII
-[X] - fix bug where harvest method crashes when improper plant id is given in character format
-[X] - clean up current rascii code
 [] - Grid System
     [X] - Design grids in x by x area
     [X] - Create grid.rs file
@@ -36,18 +33,36 @@ IN PROGRESS:
     [] - Implement accordingly
         [X] - Implement traverse_grid
         [X] - Create update_grid method to change the plant in there.
+        [X] - Stream Time!
         [] - render grid to the screen in this format, with X's indicating planted item
             [_][X][_]
             [_][X][_]
             [_][_][X]
-        [] - Add Tests for grid function
+        [] - clean up grid code + misc code as needed so it works well together
+[] - TUI Experimentation
+[] - Inventory System
+    [] - Design + initial research, Write tasks
+    [] - Other Task -> dictated by Task Above. 
 
+
+Alpha:
+Grid - [IN PROGRESS]
+Inventory
+Water Generation
+Money/Value
+Plant
+Watering
+Harvest
+[] - RASCII alpha placeholder implementation with plants
+    [] - `showplant id`
+    [] - display the plant at its current stage
+TUI - Experimentation (ratatui-org/ratatui: Rust library to build rich terminal user interfaces (TUIs) and dashboards (github.com)
+RASCII - Experimentation - [DONE]
 
 
 TODO:
 Backlog:
 [NOPE] - Experiment with RASCII Charisma crate implememntation (https://github.com/UTFeight/Charisma) (check in about 1-2 weeks)
-[X]- Add a grid of plantable options
 []- Generate list of plantable plants + their harvest times with
 []- harvestall() command. Harvests all plants on the farm. Example command is: `harvestall 1`. This would harvest all plants that have an id of 1 (i.e zuccinis)
 [] - Garden/animal ascii art
@@ -61,21 +76,6 @@ Player-driven-market
     []- Market where can sell plants.
 Expanded local saves
 [] - https://github.com/ratatui-org/ratatui alpha implementation
-
-Alpha:
-Grid
-Inventory
-Water Generation
-Money/Value
-Plant
-Watering
-Harvest
-[] - RASCII alpha placeholder implementation with plants
-    [] - `showplant id`
-    [] - display the plant at its current stage
-TUI - Experimentation (ratatui-org/ratatui: Rust library to build rich terminal user interfaces (TUIs) and dashboards (github.com)
-RASCII - Experimentation
-
 
 Beta:
 Signup
@@ -118,7 +118,7 @@ async fn get_user_input(commands: &HashMap<String, Command>) {
     println!("Welcome to Faraway Farms Remote Management Terminal! Type your commands are Below:");
     // start program and get user input
     let mut choice = String::new();
-
+    let mut grid: Vec<Vec<Box<Plant>>> = Vec::new();
     while choice.trim() != "quit" {
         choice.clear();
         print!(":> ");
@@ -218,19 +218,20 @@ async fn get_user_input(commands: &HashMap<String, Command>) {
                                 }
                                 else{
                                     // generate grid
-                                    let mut grid = grid::generate_grid(row, column, false);
+                                    grid = grid::generate_grid(row, column, false);
+                                    println!("NEW GRID:");
                                     grid::print_grid(&grid);
                                     //println!("{:?}\n",grid::traverse_grid((row).try_into().unwrap(), (column).try_into().unwrap(), &grid));
-                                    grid::update_grid(1, 1, &mut grid, Plant{
-                                        id: 50,
-                                        name: "test".to_string(),
-                                        plant_type: PlantTypes::Zuccini,
-                                        planted_timestamp: 0,
-                                        growth_time_sec: 0,
-                                        harvested_timestamp: 0
-                                    });
-                                    println!("\n");
-                                    grid::print_grid(&grid);
+                                    // grid::update_grid(1, 1, &mut grid, Plant{
+                                    //     id: 50,
+                                    //     name: "test".to_string(),
+                                    //     plant_type: PlantTypes::Zuccini,
+                                    //     planted_timestamp: 0,
+                                    //     growth_time_sec: 0,
+                                    //     harvested_timestamp: 0
+                                    // });
+                                    // println!("\n");
+                                    // grid::print_grid(&grid);
                                 }
                             }
                             None => println!("No y_val given")
@@ -238,6 +239,20 @@ async fn get_user_input(commands: &HashMap<String, Command>) {
                     },
                     None => println!("No x_val given")
                 };
+            }
+            "showgrid" => {
+                // show the generated grid
+                // check the length is greater than 0
+                if grid.len() > 0 {
+                    let mut new_plant = Plant::default();
+                    new_plant.id = 1;
+                    new_plant.plant_type = PlantTypes::Peach;
+                    grid::update_grid(1, 2, &mut grid, new_plant);
+                    grid::print_grid_simplified(&grid);
+                }
+                else {
+                    println!("Grid is empty");
+                }
             }
             "citizens_info" => {
                 let val = commands::citizen_info(choice_split).await;

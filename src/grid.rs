@@ -28,6 +28,20 @@ pub fn print_grid(matrix: &Vec<Vec<Box<Plant>>>) {
         println!("{:?}", row);
     }
 }
+pub fn print_grid_simplified(matrix: &Vec<Vec<Box<Plant>>>) {
+    for row in matrix {
+        let mut row_buffer = String::new();
+        for plant in row {
+            if (*plant).id <= -1 {
+                row_buffer += "[_]";
+            } else {
+                row_buffer += "[X]";
+            }
+        }
+        println!("{:?}", row_buffer);
+        row_buffer.clear();
+    }
+}
 
 /// WARNING: RETURNS A CLONE BECAUSE OF SHARED REFERENCE
 /// This is 1 indexed instead of zero indexed for user simplicity
