@@ -24,45 +24,7 @@ mod planet;
 mod plants;
 
 /*
-IN PROGRESS:
-[] - Grid System
-    [X] - Design grids in x by x area
-    [X] - Create grid.rs file
-    [X] - Map out interfaces
-        [NOPE] - Add Plantable Trait to vector of grid.rs plants
-    [] - Implement accordingly
-        [X] - Implement traverse_grid
-        [X] - Create update_grid method to change the plant in there.
-        [X] - Stream Time!
-        [] - render grid to the screen in this format, with X's indicating planted item
-            [_][X][_]
-            [_][X][_]
-            [_][_][X]
-        [] - clean up grid code + misc code as needed so it works well together
-[] - TUI Experimentation
-[] - Inventory System
-    [] - Design + initial research, Write tasks
-    [] - Other Task -> dictated by Task Above. 
-
-
-Alpha:
-Grid - [IN PROGRESS]
-Inventory
-Water Generation
-Money/Value
-Plant
-Watering
-Harvest
-[] - RASCII alpha placeholder implementation with plants
-    [] - `showplant id`
-    [] - display the plant at its current stage
-TUI - Experimentation (ratatui-org/ratatui: Rust library to build rich terminal user interfaces (TUIs) and dashboards (github.com)
-RASCII - Experimentation - [DONE]
-
-
-TODO:
-Backlog:
-[NOPE] - Experiment with RASCII Charisma crate implememntation (https://github.com/UTFeight/Charisma) (check in about 1-2 weeks)
+Random Backlog:
 []- Generate list of plantable plants + their harvest times with
 []- harvestall() command. Harvests all plants on the farm. Example command is: `harvestall 1`. This would harvest all plants that have an id of 1 (i.e zuccinis)
 [] - Garden/animal ascii art
@@ -76,6 +38,48 @@ Player-driven-market
     []- Market where can sell plants.
 Expanded local saves
 [] - https://github.com/ratatui-org/ratatui alpha implementation
+
+
+IN PROGRESS:
+[X] - Grid System
+    [X] - Design grids in x by x area
+    [X] - Create grid.rs file
+    [X] - Map out interfaces
+        [NOPE] - Add Plantable Trait to vector of grid.rs plants
+    [X] - Implement accordingly
+        [X] - Implement traverse_grid
+        [X] - Create update_grid method to change the plant in there.
+        [X] - Stream Time!
+        [X] - render grid to the screen in this format, with X's indicating planted item
+            [_][X][_]
+            [_][X][_]
+            [_][_][X]
+        [X] - clean up grid code + misc code as needed so it works well together
+[X] - TUI Experimentation
+[] - TUI:
+    [X] - Get custom display
+    [NOPE] - Figure out state management (not needed right now.)
+    [] - copy code from rat-test, main.rs. This has custom rendering.
+    [] - Review state management from rat-test, it is inside app.rs and ui.rs. You can see this code in action in ratatui folder. Then running  `cargo run --example demo`. I just copied it into rat-test for reference for myself.
+[] - Inventory System
+    [] - Design + initial research, Write tasks
+    [] - Other Task -> dictated by Task Above. 
+
+
+Alpha:
+[X] - Grid
+[IN PROGRESS] - Inventory
+Water Generation
+Money/Value
+Plant
+Watering
+Harvest
+[] - RASCII alpha placeholder implementation with plants
+    [] - `showplant id`
+    [] - display the plant at its current stage
+[X] - TUI - Experimentation (ratatui-org/ratatui: Rust library to build rich terminal user interfaces (TUIs) and dashboards (github.com)
+[X] - RASCII - Experimentation
+
 
 Beta:
 Signup
@@ -105,10 +109,6 @@ sell orders (`sell zuccini 2dollars 5`)
 Grid System
 Farm size/grid (plant from grid, harvest from grid)
 10x10 grid to start
-
-
-
-
 
 
 */
@@ -178,6 +178,7 @@ async fn get_user_input(commands: &HashMap<String, Command>) {
                                 .width(50) // recommend width of 50, 75 or 100
                                 //.height(60)
                                 .colored(true)
+                                //.charset(&["."])
                                 //.charset(&[".", "-", "|", "_", "#", "=",]),
                                 // .charset(&[".", ",", "-", "*", "|", "_", "#", "=", "<",">","/","L"]),
                                 // .charset(&[".", ",", "-", "*", "£", "$", "#"]),
