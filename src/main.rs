@@ -22,6 +22,7 @@ mod coordinates;
 mod db;
 mod planet;
 mod plants;
+mod ui;
 
 /*
 Random Backlog:
@@ -59,8 +60,10 @@ IN PROGRESS:
 [] - TUI:
     [X] - Get custom display
     [NOPE] - Figure out state management (not needed right now.)
-    [] - copy code from rat-test, main.rs. This has custom rendering.
+    [X] - copy code from rat-test, main.rs into ui.rs. This has custom rendering.
+    [] - Layout for homescreen TUI
     [] - Review state management from rat-test, it is inside app.rs and ui.rs. You can see this code in action in ratatui folder. Then running  `cargo run --example demo`. I just copied it into rat-test for reference for myself.
+    [] - fix showgrid, remove hardcoded placeholder.
 [] - Inventory System
     [] - Design + initial research, Write tasks
     [] - Other Task -> dictated by Task Above. 
@@ -68,7 +71,7 @@ IN PROGRESS:
 
 Alpha:
 [X] - Grid
-[IN PROGRESS] - Inventory
+[] - Inventory
 Water Generation
 Money/Value
 Plant
@@ -106,7 +109,6 @@ art for each stage of plant life cycle
 realtime player driven market (Rocket API/Backend with Postgres/Mongo)
 buy orders (`buy zuccini 2dollars at price of )
 sell orders (`sell zuccini 2dollars 5`)
-Grid System
 Farm size/grid (plant from grid, harvest from grid)
 10x10 grid to start
 
@@ -254,6 +256,20 @@ async fn get_user_input(commands: &HashMap<String, Command>) {
                 else {
                     println!("Grid is empty");
                 }
+            }
+            "ui" => {
+                // show the generated grid
+                // check the length is greater than 0
+                // match choice_split.next() {
+                //     Some(x_val) => {
+                //     },
+                //     None => println!("No x_val given")
+                // };
+                println!("UI TBD");
+                match ui::ui_start() {
+                    Ok(_) => (),
+                    Err(e) => println!("ERROR SPINNING UP UI:{:?}", e),
+                };
             }
             "citizens_info" => {
                 let val = commands::citizen_info(choice_split).await;

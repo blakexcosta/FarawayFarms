@@ -58,7 +58,8 @@ use std::{
 // [] - copy code from rat-test, main.rs. This has custom rendering.
 // [] - Review state management from rat-test, it is inside app.rs and ui.rs. You can see this code in action in ratatui folder. Then running  `cargo run --example demo`. I just copied it into rat-test for reference for myself.
 
-fn main() -> Result<(), Box<dyn Error>> {
+/// Entry point for starting the UI and all it's related helper functions
+pub fn ui_start() -> Result<(), Box<dyn Error>> {
     let mut terminal = setup_terminal()?;
     run(&mut terminal)?;
     restore_terminal(&mut terminal)?;
@@ -96,14 +97,22 @@ fn ui<B: Backend>(f: &mut Frame<B>) {
             .as_ref(),
         )
         .split(f.size());
-    let greeting = Paragraph::new("Hello World!");
+
+    // BLOCKS/EXAMPLES
+    // -----------------------------------------------------------
+
+    let greeting = Paragraph::new("FARAWAY FARMS REMOTE TERMINAL LLC.");
     f.render_widget(greeting, f.size());
-    let block = Block::default().title("Block").borders(Borders::ALL);
-    f.render_widget(block, chunks[0]);
-    let block = Block::default().title("Block 2").borders(Borders::ALL);
-    f.render_widget(block, chunks[1]);
-    let block = Block::default().title("Block 3").borders(Borders::ALL);
-    f.render_widget(block, chunks[2]);
+    // let block = Block::default().title("Block").borders(Borders::ALL);
+    // f.render_widget(block, chunks[0]);
+    // let block = Block::default().title("Block 2").borders(Borders::ALL);
+    // f.render_widget(block, chunks[1]);
+    // let block = Block::default().title("Block 3").borders(Borders::ALL);
+    // f.render_widget(block, chunks[2]);
+
+    // BARCHART
+    // -----------------------------------------------------------
+
     //     let barchart = BarChart::default()
     //         .block(Block::default().title("BarChart").borders(Borders::ALL))
     //         .bar_width(5)
@@ -116,56 +125,60 @@ fn ui<B: Backend>(f: &mut Frame<B>) {
     //         .data(BarGroup::default().bars(&[Bar::default().value(10), Bar::default().value(20)]))
     //         .max(4);
     //     f.render_widget(barchart, chunks[3]);
-    let table = Table::new(vec![
-        // Row can be created from simple strings.
-        Row::new(vec!["Row11", "Row12", "Row13"]),
-        // You can style the entire row.
-        Row::new(vec!["Row21", "Row22", "Row23"]).style(Style::default().fg(Color::Blue)),
-        // If you need more control over the styling you may need to create Cells directly
-        Row::new(vec![
-            Cell::from("Row31"),
-            Cell::from("Row32").style(Style::default().fg(Color::Yellow)),
-            Cell::from(Line::from(vec![
-                Span::raw("Row"),
-                Span::styled("33", Style::default().fg(Color::Green)),
-            ])),
-        ]),
-        // If a Row need to display some content over multiple lines, you just have to change
-        // its height.
-        Row::new(vec![
-            Cell::from("Row\n41"),
-            Cell::from("Row\n42"),
-            Cell::from("Row\n43"),
-        ])
-        .height(2),
-    ])
-    // You can set the style of the entire Table.
-    .style(Style::default().fg(Color::White))
-    // It has an optional header, which is simply a Row always visible at the top.
-    .header(
-        Row::new(vec!["Col1", "Col2", "Col3"])
-            .style(Style::default().fg(Color::Yellow))
-            // If you want some space between the header and the rest of the rows, you can always
-            // specify some margin at the bottom.
-            .bottom_margin(1),
-    )
-    // As any other widget, a Table can be wrapped in a Block.
-    .block(Block::default().title("Table"))
-    // Columns widths are constrained in the same way as Layout...
-    .widths(&[
-        Constraint::Length(5),
-        Constraint::Length(5),
-        Constraint::Length(10),
-    ])
-    // ...and they can be separated by a fixed spacing.
-    .column_spacing(1)
-    // If you wish to highlight a row in any specific way when it is selected...
-    .highlight_style(Style::default().add_modifier(Modifier::BOLD))
-    // ...and potentially show a symbol in front of the selection.
-    .highlight_symbol(">>");
-    f.render_widget(table, chunks[3]);
 
-    // custom paragrapg block
+    // TABLE
+    // -----------------------------------------------------------
+    // let table = Table::new(vec![
+    //     // Row can be created from simple strings.
+    //     Row::new(vec!["Row11", "Row12", "Row13"]),
+    //     // You can style the entire row.
+    //     Row::new(vec!["Row21", "Row22", "Row23"]).style(Style::default().fg(Color::Blue)),
+    //     // If you need more control over the styling you may need to create Cells directly
+    //     Row::new(vec![
+    //         Cell::from("Row31"),
+    //         Cell::from("Row32").style(Style::default().fg(Color::Yellow)),
+    //         Cell::from(Line::from(vec![
+    //             Span::raw("Row"),
+    //             Span::styled("33", Style::default().fg(Color::Green)),
+    //         ])),
+    //     ]),
+    //     // If a Row need to display some content over multiple lines, you just have to change
+    //     // its height.
+    //     Row::new(vec![
+    //         Cell::from("Row\n41"),
+    //         Cell::from("Row\n42"),
+    //         Cell::from("Row\n43"),
+    //     ])
+    //     .height(2),
+    // ])
+    // // You can set the style of the entire Table.
+    // .style(Style::default().fg(Color::White))
+    // // It has an optional header, which is simply a Row always visible at the top.
+    // .header(
+    //     Row::new(vec!["Col1", "Col2", "Col3"])
+    //         .style(Style::default().fg(Color::Yellow))
+    //         // If you want some space between the header and the rest of the rows, you can always
+    //         // specify some margin at the bottom.
+    //         .bottom_margin(1),
+    // )
+    // // As any other widget, a Table can be wrapped in a Block.
+    // .block(Block::default().title("Table"))
+    // // Columns widths are constrained in the same way as Layout...
+    // .widths(&[
+    //     Constraint::Length(5),
+    //     Constraint::Length(5),
+    //     Constraint::Length(10),
+    // ])
+    // // ...and they can be separated by a fixed spacing.
+    // .column_spacing(1)
+    // // If you wish to highlight a row in any specific way when it is selected...
+    // .highlight_style(Style::default().add_modifier(Modifier::BOLD))
+    // // ...and potentially show a symbol in front of the selection.
+    // .highlight_symbol(">>");
+    // f.render_widget(table, chunks[3]);
+    // -----------------------------------------------------------
+
+    // CUSTOM PARAGRAPH BLOCK
     let block = Block::default().borders(Borders::ALL).title(Span::styled(
         "Footer",
         Style::default()
@@ -229,13 +242,13 @@ j1p%%%%%%&W8MM&&W%%%%%%%%%%%%%%%%&&8MM8W&%%%%%%q1n\n
     let paragraph = Paragraph::new(text).block(block).wrap(Wrap { trim: true });
     f.render_widget(
         paragraph,
-        Rect {
-            x: 50,
-            y: 5,
-            width: 100,
-            height: 10,
-        },
-        //chunks[4],
+        // Rect {
+        //     x: 50,
+        //     y: 5,
+        //     width: 100,
+        //     height: 10,
+        // },
+        chunks[3],
     ); //chunks[4]);
 }
 
