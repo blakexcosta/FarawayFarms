@@ -25,7 +25,7 @@ mod plants;
 mod ui;
 
 /*
-Random Backlog:
+BACKLOG:
 []- Generate list of plantable plants + their harvest times with
 []- harvestall() command. Harvests all plants on the farm. Example command is: `harvestall 1`. This would harvest all plants that have an id of 1 (i.e zuccinis)
 [] - Garden/animal ascii art
@@ -56,19 +56,16 @@ IN PROGRESS:
             [_][X][_]
             [_][_][X]
         [X] - clean up grid code + misc code as needed so it works well together
-[X] - TUI Experimentation
-[] - TUI:
-    [X] - Get custom display
-    [NOPE] - Figure out state management (not needed right now.)
-    [X] - copy code from rat-test, main.rs into ui.rs. This has custom rendering.
-    [] - Layout for homescreen TUI
-    [] - Review state management from rat-test, it is inside app.rs and ui.rs. You can see this code in action in ratatui folder. Then running  `cargo run --example demo`. I just copied it into rat-test for reference for myself.
-    [] - fix showgrid, remove hardcoded placeholder.
 [] - Inventory System
     [] - Design + initial research, Write tasks
     [] - Other Task -> dictated by Task Above. 
+[] - TUI: 
+    [] - Review TUI code
+    [] - Layout for homescreen TUI
+    [] - Review state management from rat-test, it is inside app.rs and ui.rs. You can see this code in action in ratatui folder. Then running  `cargo run --example demo`. I just copied it into rat-test for reference for myself.
+    [] - fix showgrid, remove hardcoded placeholder.
 
-
+------------------------------------
 Alpha:
 [X] - Grid
 [] - Inventory
@@ -111,7 +108,7 @@ buy orders (`buy zuccini 2dollars at price of )
 sell orders (`sell zuccini 2dollars 5`)
 Farm size/grid (plant from grid, harvest from grid)
 10x10 grid to start
-
+------------------------------------
 
 */
 // reviewing some docs
